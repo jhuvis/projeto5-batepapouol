@@ -1,0 +1,136 @@
+*{
+    font-family: 'Roboto';
+    font-weight: 400;
+    
+}
+
+body{
+    background: #F3F3F3;
+}
+
+li{
+    display: flex;
+    list-style-type: none;
+   
+}
+
+ul{
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 100px;
+}
+
+.tempo
+{
+    color: #AAAAAA;
+}
+.text
+{
+    width: 100%;
+}
+
+b{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+}
+
+.status
+{
+    
+    padding-top: 20px;
+    padding-bottom: 15px;
+    background: #DCDCDC;
+    border-radius: 2px;
+    margin-bottom: 5px;
+    width: 100%;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.message
+{
+    
+    padding-top: 20px;
+    padding-bottom: 15px;
+    background: #FFFFFF;
+    border-radius: 2px;
+    margin-bottom: 5px;
+    width: 100%;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.top{
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.top img{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.baixo
+{
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    left: 0px;
+    bottom: 0px;
+    background: #FFFFFF;
+    box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.baixo img
+{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 25px;
+    margin-right: 20px;
+}
+
+input{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 25px;
+    margin-right: 20px;
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+}
