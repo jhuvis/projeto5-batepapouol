@@ -1,31 +1,23 @@
-const msg = [
-    {
-        from: "João",
-        to: "Todos",
-        text: "entra na sala...",
-        type: "status",
-        time: "08:01:17"
-    },
-    {
-        from: "João",
-        to: "Todos",
-        text: "Bom dia",
-        type: "message",
-        time: "08:02:50"
-    },
-];
 
-const nome =  prompt("Digite seu nome:");
-const req = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants ', {nome});
+
+var nome = prompt("Digite seu nome:");
+const obj = 
+    {
+    name: nome,
+    }
+
+var req = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants ', obj);
 req.then(tratarSucesso);
 req.catch(tratarError);
 
+var p = new Object();
+
 function tratarError(erro)
 {
-    if(erro.response.status === 400)
+    if(erro.response.status == 400)
     {
-        nome =  prompt("Digite outro nome, esse ja esta em uso:");
-        req = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants ', {nome});
+        obj.name = prompt("Digite outro nome, esse ja esta em uso:");
+        req = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants ', obj);
         req.then(tratarSucesso);
         req.catch(tratarError);
     }
@@ -35,37 +27,58 @@ function tratarError(erro)
     }
 }
 
-function tratarSucesso(Resposta)
+function request()
 {
-    carregarMsg();
+    axios.post('https://mock-api.driven.com.br/api/v6/uol/status', obj);
 }
 
-function carregarMsg()
+function tratarSucesso(r)
 {
-    document.querySelector("ul").innerHTML = "";
-    for (let i = 0; i < msg.length; i++) 
-    {
-        if(msg[i].type === "status")
+    const statusCode = r.status;
+    setInterval("request();", 5000);
+    setInterval("tempoMsg();", 1000);
+}
+
+function tempoMsg()
+{
+    p = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');  
+    p.then(carregarMsg);
+    p.catch(erroM);
+    
+}
+
+function erroM(erro)
+{
+    alert(erro);
+}
+
+function carregarMsg(msg)
+{
+    const mostra = document.querySelector("ul");
+    var mostraMsg = "";
+
+        if(msg.data[msg.data.length - 1].type === "status")
         {
-        const mostraMsg = `
+        mostraMsg += `
           <li>
-              <div class="${msg[i].type}">
-                <span class="tempo">${msg[i].time} </span><b> ${msg[i].from} </b><span> ${msg[i].text}</span>
+              <div class="${msg.data[msg.data.length - 1].type}">
+                <span class="tempo">${msg.data[msg.data.length - 1].time} </span><b> ${msg.data[msg.data.length - 1].from} </b><span> ${msg.data[msg.data.length - 1].text}</span>
               </div>
           </li>`;
 
-        document.querySelector("ul").innerHTML += mostraMsg;
         } 
-        if(msg[i].type === "message")
+        if(msg.data[msg.data.length - 1].type === "message")
         {
-        const mostraMsg = `
+        mostraMsg += `
           <li>
-              <div class="${msg[i].type}">
-                <span class="tempo">${msg[i].time} </span><b> ${msg[i].from} </b> para <b> ${msg[i].to} </b><span> ${msg[i].text}</span>
+              <div class="${msg.data[msg.data.length - 1].type}">
+                <span class="tempo">${msg.data[msg.data.length - 1].time} </span><b> ${msg.data[msg.data.length - 1].from} </b> para <b> ${msg.data[msg.data.length - 1].to} </b><span> ${msg.data[msg.data.length - 1].text}</span>
               </div>
           </li>`;
-          
-        document.querySelector("ul").innerHTML += mostraMsg;
+                      
         }
-      }
+
+        mostra.innerHTML += mostraMsg;
+        mostra.scrollIntoView();
+        
 }
