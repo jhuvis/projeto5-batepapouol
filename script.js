@@ -102,5 +102,6 @@ function enviarMsg()
 
     requisicao.catch(erroM);
     tempoMsg();
+    document.querySelector(".texto").value = "";
 
 }
