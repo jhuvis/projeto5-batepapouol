@@ -1,5 +1,5 @@
 
-
+tempoMsg();
 var nome = prompt("Digite seu nome:");
 const obj = 
     {
@@ -41,11 +41,6 @@ function tratarSucesso()
     
 }
 
-function renderiza(resposta)
-{
-    p = resposta.data;
-}
-
 function tempoMsg()
 {
     const promessa = axios.get(
@@ -63,8 +58,8 @@ function carregarMsg(resposta)
 {
     p = resposta.data;
     const mostra = document.querySelector("ul");
-    
-    for (let i = p.length - 1; i < p.length; i++)
+    mostra.innerHTML = "";
+    for (let i = 0; i < p.length; i++)
     {
         if(p[i].type === "status")
         {
@@ -87,7 +82,9 @@ function carregarMsg(resposta)
                       
         }
     }
-        mostra.scrollIntoView();
+        const mostraA = mostra.scrollHeight;
+        window.scrollTo(0, mostraA);
+        //mostra.scrollIntoView();
         
 }
 
@@ -104,5 +101,6 @@ function enviarMsg()
     const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msg);
 
     requisicao.catch(erroM);
+    tempoMsg();
 
 }
