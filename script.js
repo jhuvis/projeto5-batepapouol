@@ -6,15 +6,16 @@ const obj =
     name: nome,
     }
 
+let p;
 var req = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants ', obj);
 req.then(tratarSucesso);
 req.catch(tratarError);
 
-var p = new Object();
+
 
 function tratarError(erro)
 {
-    if(erro.response.status == 400)
+    if(erro.status === 400)
     {
         obj.name = prompt("Digite outro nome, esse ja esta em uso:");
         req = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants ', obj);
@@ -32,19 +33,25 @@ function request()
     axios.post('https://mock-api.driven.com.br/api/v6/uol/status', obj);
 }
 
-function tratarSucesso(r)
+function tratarSucesso()
 {
-    const statusCode = r.status;
     setInterval("request();", 5000);
-    setInterval("tempoMsg();", 1000);
+    setInterval("tempoMsg();", 3000);
+    //setTimeout ("carregarMsg();", 3001);  
+    
+}
+
+function renderiza(resposta)
+{
+    p = resposta.data;
 }
 
 function tempoMsg()
 {
-    p = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');  
-    p.then(carregarMsg);
-    p.catch(erroM);
-    
+    const promessa = axios.get(
+        "https://mock-api.driven.com.br/api/v6/uol/messages"
+      );
+      promessa.then(carregarMsg);   
 }
 
 function erroM(erro)
@@ -52,33 +59,50 @@ function erroM(erro)
     alert(erro);
 }
 
-function carregarMsg(msg)
+function carregarMsg(resposta)
 {
+    p = resposta.data;
     const mostra = document.querySelector("ul");
-    var mostraMsg = "";
-
-        if(msg.data[msg.data.length - 1].type === "status")
+    
+    for (let i = p.length - 1; i < p.length; i++)
+    {
+        if(p[i].type === "status")
         {
-        mostraMsg += `
+            mostra.innerHTML += `
           <li>
-              <div class="${msg.data[msg.data.length - 1].type}">
-                <span class="tempo">${msg.data[msg.data.length - 1].time} </span><b> ${msg.data[msg.data.length - 1].from} </b><span> ${msg.data[msg.data.length - 1].text}</span>
+              <div class="${p[i].type}">
+                <span class="tempo">${p[i].time} </span><b> ${p[i].from} </b><span> ${p[i].text}</span>
               </div>
           </li>`;
-
         } 
-        if(msg.data[msg.data.length - 1].type === "message")
+        
+        if(p[i].type === "message")
         {
-        mostraMsg += `
+            mostra.innerHTML += `
           <li>
-              <div class="${msg.data[msg.data.length - 1].type}">
-                <span class="tempo">${msg.data[msg.data.length - 1].time} </span><b> ${msg.data[msg.data.length - 1].from} </b> para <b> ${msg.data[msg.data.length - 1].to} </b><span> ${msg.data[msg.data.length - 1].text}</span>
+              <div class="${p[i].type}">
+                <span class="tempo">${p[i].time} </span><b> ${p[i].from} </b> para <b> ${p[i].to} </b><span> ${p[i].text}</span>
               </div>
           </li>`;
                       
         }
-
-        mostra.innerHTML += mostraMsg;
+    }
         mostra.scrollIntoView();
         
+}
+
+function enviarMsg()
+{
+    const pega = document.querySelector(".texto").value;
+    const msg = {
+        from: nome,
+        to: "Todos",
+        text: pega,
+        type: "message" 
+    }
+
+    const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', msg);
+
+    requisicao.catch(erroM);
+
 }
